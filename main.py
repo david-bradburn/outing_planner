@@ -1,4 +1,5 @@
 import pickle
+import os
 # from enum import Enum
 
 
@@ -79,6 +80,19 @@ class rowing_member():
                 self.enter_coxing_ability()
 
 
+    def check_if_file_exists(self, path, filename):
+        for root, dir1, files in os.walk(path):
+            # print(root)
+            # print(dir1)
+            # print(files)
+            if filename in files:
+                print(filename)
+                return True
+
+        # print("file does not exist")
+        return False
+
+
 
 
     def display_member(self):
@@ -89,12 +103,28 @@ class rowing_member():
         print(f"Confident in a 1x: {self.can_1x}")
         print(f"Can cox: {self.can_cox}")
 
-    def save_object(self):
-        root = "./member_data"
-        # filename = self.mem_name
+    def save_object(self, overwrite = False):
+
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        root = "member_data"
+        filename = f"{self.mem_name}.pickle"
+
+        base = os.path.join(dir_path, root)
+        filepath = os.path.join(base, filename)
+
+        if(not overwrite):
+            # print(f"checking if file exitsts in {base}")
+            file_exists = self.check_if_file_exists(base, filename)
+            if(file_exists):
+                print(f"filename {self.mem_name} already exists please rename")
+                self.create_member()
+                self.save_object()
+                return
+
         try:
 
-            with open(f"{self.mem_name}.pickle", "wb") as f:
+            with open(filepath, "wb") as f:
                 pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as ex:
             print("Error during pickling object (Possibly unsupported):", ex)
@@ -108,6 +138,7 @@ class outing_planner():
         self.main_menu()
 
     def main_menu(self):
+        print("------------------------------------------------------")
 
         try: 
             op = int(input("Please enter operation: \n   0 : create and outing\n   1 : create member\n   2 : view / edit member \n   9 : quit program\n"))
