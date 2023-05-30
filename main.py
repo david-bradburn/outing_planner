@@ -14,6 +14,8 @@ class rowing_member():
         else:
             self.can_1x = "no"
 
+        self.enter_coxing_ability()
+
         self.display_member()
 
 
@@ -67,13 +69,25 @@ class rowing_member():
                 print("Please enter a valid state (yes or no)")
                 self.enter_1x_proficiency()
 
+    def enter_coxing_ability(self):
+        temp = input(f"Can {self.mem_name} cox (yes/no)")
+        match temp:
+            case "yes" | "no":
+                self.can_cox = temp
+            case _:
+                print("Please enter a valid state (yes or no)")
+                self.enter_coxing_ability()
+
+
+
 
     def display_member(self):
         print(f"Name: {self.mem_name}")
         print(f"Rowing side: {self.mem_side}")
         print(f"Can scull: {self.can_scull}")
-        print(f"Can foot steer {self.can_foot_steer}")
-        print(f"Confident in a 1x {self.can_1x}")
+        print(f"Can foot steer: {self.can_foot_steer}")
+        print(f"Confident in a 1x: {self.can_1x}")
+        print(f"Can cox: {self.can_cox}")
 
     def save_object(self):
 
@@ -95,7 +109,7 @@ class outing_planner():
     def main_menu(self):
 
         try: 
-            op = int(input("Please enter operation: "))
+            op = int(input("Please enter operation: \n   0 : create and outing\n   1 : create member\n   2 : view / edit member \n   9 : quit program\n"))
 
 
             match op:
@@ -107,12 +121,16 @@ class outing_planner():
                     obj = rowing_member()
                     obj.save_object()
                 case 2: # view /edit member // load and edit
-                    mem_filename = input("Please enter the member you wish to view / make a change")
+                    mem_filename = input("Please enter the member you wish to view / make a change: ")
                     # print(type(mem_filename))
                     temp_name = f"{mem_filename}.pickle"
                     print(temp_name)
                     obj2 = self.load_object(temp_name)
                     obj2.display_member()
+
+
+                case 9:
+                    quit()
 
                 case _:
                     raise ValueError
@@ -120,6 +138,9 @@ class outing_planner():
         except ValueError:
             print("Please enter valid value")
             self.main_menu()
+
+
+        self.main_menu()
 
 
     def load_object(self, filename):
