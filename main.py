@@ -12,7 +12,7 @@ class MyClass():
     def __init__(self, param):
         self.param = param
         self.name = ""
-        self.side =     
+        self.side = 
  
 def save_object(obj):
     try:
