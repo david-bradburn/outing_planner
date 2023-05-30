@@ -14,9 +14,11 @@ class rowing_member():
         else:
             self.can_1x = "no"
 
+        self.display_member()
+
 
     def create_member(self):
-        self.mem_name = input("Enter member name")
+        self.mem_name = input("Enter member name: ")
 
 
     # def enter_data(self, msg: str, options: list):
@@ -69,6 +71,9 @@ class rowing_member():
     def display_member(self):
         print(f"Name: {self.mem_name}")
         print(f"Rowing side: {self.mem_side}")
+        print(f"Can scull: {self.can_scull}")
+        print(f"Can foot steer {self.can_foot_steer}")
+        print(f"Confident in a 1x {self.can_1x}")
 
     def save_object(self):
 
@@ -78,16 +83,6 @@ class rowing_member():
                 pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as ex:
             print("Error during pickling object (Possibly unsupported):", ex)
-
-
-
-
-
-
-    
-
-
-
 
 
 
@@ -111,8 +106,13 @@ class outing_planner():
                 case 1: # create_member + save
                     obj = rowing_member()
                     obj.save_object()
-                case 2: # edit member // load and edit
-                    
+                case 2: # view /edit member // load and edit
+                    mem_filename = input("Please enter the member you wish to view / make a change")
+                    # print(type(mem_filename))
+                    temp_name = f"{mem_filename}.pickle"
+                    print(temp_name)
+                    obj2 = self.load_object(temp_name)
+                    obj2.display_member()
 
                 case _:
                     raise ValueError
@@ -122,7 +122,7 @@ class outing_planner():
             self.main_menu()
 
 
-    def load_object(filename):
+    def load_object(self, filename):
         try:
             with open(filename, "rb") as f:
                 return pickle.load(f)
@@ -130,33 +130,6 @@ class outing_planner():
             print("Error during unpickling object (Possibly unsupported):", ex)
 
 
-# def save_object(obj):
-#     try:
-#         with open("data.pickle", "wb") as f:
-#             pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
-#     except Exception as ex:
-#         print("Error during pickling object (Possibly unsupported):", ex)
- 
-
-def load_object(filename):
-    try:
-        with open(filename, "rb") as f:
-            return pickle.load(f)
-    except Exception as ex:
-        print("Error during unpickling object (Possibly unsupported):", ex)
- 
 
 
-
-obj = MyClass(10)
-obj.name = "steve"
-save_object(obj)
-
-obj2 = load_object("data.pickle")
- 
-print(obj2.param)
-print(obj2.name)
-# print(isinstance(obj, MyClass))
-
-
-
+outing_planner()
