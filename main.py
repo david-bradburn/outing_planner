@@ -21,7 +21,7 @@ class rowing_member():
 
 
     def create_member(self):
-        self.mem_name = input("Enter member name: ")
+        self.mem_name = input("Enter member name (i.e. first last): ")
 
 
     # def enter_data(self, msg: str, options: list):
@@ -34,49 +34,49 @@ class rowing_member():
 
     def enter_side(self): # sweep only
         # self.mem_side 
-        temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either or n/a)")
+        temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either or n/a): ")
         match temp:
 
             case "stroke" | "bow" | "either" | "n/a":
                 self.mem_side = temp
             case _:
-                print("Please enter valid side (stroke, bow, either or n/a)")
+                print("Please enter valid side (stroke, bow, either or n/a): ")
                 self.enter_side()
 
     def enter_sculling(self):
-        temp = input(f"Can {self.mem_name} scull (yes/no)")
+        temp = input(f"Can {self.mem_name} scull (yes/no): ")
         match temp:
             case "yes" | "no":
                 self.can_scull = temp
             case _:
-                print("Please enter a valid state (yes or no)")
+                print("Please enter a valid state (yes or no): ")
                 self.enter_sculling()
 
     def enter_foot_steering(self):
-        temp = input(f"Can {self.mem_name} foot steer (yes/no)")
+        temp = input(f"Can {self.mem_name} foot steer (yes/no): ")
         match temp:
             case "yes" | "no":
                 self.can_foot_steer = temp
             case _:
-                print("Please enter a valid state (yes or no)")
+                print("Please enter a valid state (yes or no): ")
                 self.enter_foot_steering()
 
     def enter_1x_proficiency(self):
-        temp = input(f"Is {self.mem_name} confident in a 1x (yes/no)")
+        temp = input(f"Is {self.mem_name} confident in a 1x (yes/no): ")
         match temp:
             case "yes" | "no":
                 self.can_1x = temp
             case _:
-                print("Please enter a valid state (yes or no)")
+                print("Please enter a valid state (yes or no): ")
                 self.enter_1x_proficiency()
 
     def enter_coxing_ability(self):
-        temp = input(f"Can {self.mem_name} cox (yes/no)")
+        temp = input(f"Can {self.mem_name} cox (yes/no): ")
         match temp:
             case "yes" | "no":
                 self.can_cox = temp
             case _:
-                print("Please enter a valid state (yes or no)")
+                print("Please enter a valid state (yes or no): ")
                 self.enter_coxing_ability()
 
 
@@ -93,9 +93,8 @@ class rowing_member():
         return False
 
 
-
-
     def display_member(self):
+        """Just prints the rowing member attributes"""
         print(f"Name: {self.mem_name}")
         print(f"Rowing side: {self.mem_side}")
         print(f"Can scull: {self.can_scull}")
@@ -155,8 +154,8 @@ class outing_planner():
                 case 2: # view /edit member // load and edit
                     mem_filename = input("Please enter the member you wish to view / make a change: ")
                     # print(type(mem_filename))
-                    temp_name = f"{mem_filename}.pickle"
-                    print(temp_name)
+                    # temp_name = f"{mem_filename}.pickle"
+                    # print(temp_name)
                     obj2 = self.load_object(temp_name)
                     obj2.display_member()
 
@@ -176,8 +175,17 @@ class outing_planner():
 
 
     def load_object(self, filename):
+
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        root = "member_data"
+        filename = f"{self.mem_name}.pickle"
+
+        base = os.path.join(dir_path, root)
+        filepath = os.path.join(base, filename)
+
         try:
-            with open(filename, "rb") as f:
+            with open(filepath, "rb") as f:
                 return pickle.load(f)
         except Exception as ex:
             print("Error during unpickling object (Possibly unsupported):", ex)
