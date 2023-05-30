@@ -90,9 +90,10 @@ class rowing_member():
         print(f"Can cox: {self.can_cox}")
 
     def save_object(self):
-
+        root = "./member_data"
         # filename = self.mem_name
         try:
+
             with open(f"{self.mem_name}.pickle", "wb") as f:
                 pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as ex:
