@@ -4,6 +4,7 @@ import os
 
 
 class rowing_member():
+    
     def __init__(self):
         self.create_member()
         self.enter_side()
@@ -43,6 +44,7 @@ class rowing_member():
                 print("Please enter valid side (stroke, bow, either or n/a): ")
                 self.enter_side()
 
+
     def enter_sculling(self):
         temp = input(f"Can {self.mem_name} scull (yes/no): ")
         match temp:
@@ -51,6 +53,7 @@ class rowing_member():
             case _:
                 print("Please enter a valid state (yes or no): ")
                 self.enter_sculling()
+
 
     def enter_foot_steering(self):
         temp = input(f"Can {self.mem_name} foot steer (yes/no): ")
@@ -61,6 +64,7 @@ class rowing_member():
                 print("Please enter a valid state (yes or no): ")
                 self.enter_foot_steering()
 
+
     def enter_1x_proficiency(self):
         temp = input(f"Is {self.mem_name} confident in a 1x (yes/no): ")
         match temp:
@@ -69,6 +73,7 @@ class rowing_member():
             case _:
                 print("Please enter a valid state (yes or no): ")
                 self.enter_1x_proficiency()
+
 
     def enter_coxing_ability(self):
         temp = input(f"Can {self.mem_name} cox (yes/no): ")
@@ -101,6 +106,7 @@ class rowing_member():
         print(f"Can foot steer: {self.can_foot_steer}")
         print(f"Confident in a 1x: {self.can_1x}")
         print(f"Can cox: {self.can_cox}")
+
 
     def save_object(self, overwrite = False):
 
@@ -135,6 +141,7 @@ class outing_planner():
     def __init__(self):
 
         self.main_menu()
+
 
     def main_menu(self):
         print("------------------------------------------------------")
@@ -189,8 +196,6 @@ class outing_planner():
                 return pickle.load(f)
         except Exception as ex:
             print("Error during unpickling object (Possibly unsupported):", ex)
-
-
 
 
 outing_planner()
