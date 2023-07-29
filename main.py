@@ -8,15 +8,15 @@ class rowing_member():
     def __init__(self):
         self.create_member()
         self.enter_side()
-        self.enter_sculling()
-        self.enter_foot_steering()
+        # self.enter_sculling()
+        # self.enter_foot_steering()
 
-        if self.can_scull == "yes":
-            self.enter_1x_proficiency() 
-        else:
-            self.can_1x = "no"
+        # if self.can_scull == "yes":
+        #     self.enter_1x_proficiency() 
+        # else:
+        #     self.can_1x = "no"
 
-        self.enter_coxing_ability()
+        # self.enter_coxing_ability()
 
         self.display_member()
 
@@ -102,10 +102,10 @@ class rowing_member():
         """Just prints the rowing member attributes"""
         print(f"Name: {self.mem_name}")
         print(f"Rowing side: {self.mem_side}")
-        print(f"Can scull: {self.can_scull}")
-        print(f"Can foot steer: {self.can_foot_steer}")
-        print(f"Confident in a 1x: {self.can_1x}")
-        print(f"Can cox: {self.can_cox}")
+        # print(f"Can scull: {self.can_scull}")
+        # print(f"Can foot steer: {self.can_foot_steer}")
+        # print(f"Confident in a 1x: {self.can_1x}")
+        # print(f"Can cox: {self.can_cox}")
 
 
     def save_object(self, overwrite = False):
@@ -161,7 +161,7 @@ class outing_planner():
                 case 2: # view /edit member // load and edit
                     mem_filename = input("Please enter the member you wish to view / make a change: ")
                     # print(type(mem_filename))
-                    # temp_name = f"{mem_filename}.pickle"
+                    temp_name = f"{mem_filename}.pickle"
                     # print(temp_name)
                     obj2 = self.load_object(temp_name)
                     obj2.display_member()
