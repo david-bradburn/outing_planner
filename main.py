@@ -36,6 +36,7 @@ class rowing_member():
 
 
     def check_if_file_exists(self, path, filename):
+        """Checks to see if a given file exits at a given location"""
         for root, dir1, files in os.walk(path):
             # print(root)
             # print(dir1)
@@ -50,12 +51,8 @@ class rowing_member():
 
     def display_member(self):
         """Just prints the rowing member attributes"""
-        print(f"Name: {self.mem_name}")
+        print(f"Name       : {self.mem_name}")
         print(f"Rowing side: {self.mem_side}")
-        # print(f"Can scull: {self.can_scull}")
-        # print(f"Can foot steer: {self.can_foot_steer}")
-        # print(f"Confident in a 1x: {self.can_1x}")
-        # print(f"Can cox: {self.can_cox}")
 
 
     def save_object(self, overwrite = False):
@@ -102,7 +99,7 @@ class outing_planner():
         print("------------------------------------------------------")
 
         try: 
-            op = int(input("Please enter operation: \n   0 : create and outing\n   1 : create member\n   2 : load member \n   3 : edit loaded member \n   9 : quit program\n"))
+            op = int(input("Please enter operation: \n   0 : create and outing\n   1 : create member\n   2 : display/edit member \n   9 : quit program\n"))
 
 
             match op:
@@ -115,12 +112,15 @@ class outing_planner():
                     obj.save_object()
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view / make a change: ")
-                    # print(type(mem_filename))
-                    # temp_name = f"{mem_filename}.pickle"
-                    # print(temp_name)
-                    obj2 = self.load_object(mem_name)
+                    self.loaded_mem_obj, valid_mem = self.load_object(mem_name)
 
-                    obj2.display_member()
+                    if not valid_mem:
+                        return
+                    
+                    self.loaded_mem_obj.display_member()
+                    self.edit_member()
+                    
+
 
 
                 case 9:
@@ -131,7 +131,22 @@ class outing_planner():
 
         except ValueError:
             print("Please enter valid value")
+
+    def edit_member(self):
+        ip = str(input(f"Would you like to edit member ({self.loaded_mem_obj.mem_name})? y/n: "))
+    
+        match ip.lower():
+            case "n":
+                return
+            case "y":
+                self.edit_member()
+            case _
             
+        op = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n"))
+
+
+    def create_outing(self):
+        ...
 
     def load_object(self, filename):
 
