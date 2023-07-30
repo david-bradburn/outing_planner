@@ -2,3 +2,4 @@
 
 *.pickle
 .venv
+*.pyc
