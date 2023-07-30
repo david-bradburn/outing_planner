@@ -1,85 +1,7 @@
 import pickle
 import os
+import rowing_member
 # from enum import Enum
-
-
-class rowing_member():
-    
-    def __init__(self):
-        self.enter_member_name()
-        self.enter_side()
-        self.display_member()
-
-
-    def enter_member_name(self):
-        self.mem_name = str(input("Enter member name (i.e. first last): "))
-
-
-    # def enter_data(self, msg: str, options: list):
-
-    #     for i in options:
-    #         options_list
-
-    #     temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either, n/a)")
-
-
-    def enter_side(self): # sweep only
-        # self.mem_side 
-        temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either or n/a): ")
-        match temp:
-
-            case "stroke" | "bow" | "either" | "n/a":
-                self.mem_side = temp
-            case _:
-                print("Please enter valid side (stroke, bow, either or n/a): ")
-                self.enter_side()
-
-
-    def check_if_file_exists(self, path, filename):
-        """Checks to see if a given file exits at a given location"""
-        for root, dir1, files in os.walk(path):
-            # print(root)
-            # print(dir1)
-            # print(files)
-            if filename in files:
-                print(filename)
-                return True
-
-        # print("file does not exist")
-        return False
-
-
-    def display_member(self):
-        """Just prints the rowing member attributes"""
-        print(f"Name       : {self.mem_name}")
-        print(f"Rowing side: {self.mem_side}")
-
-
-    def save_object(self, overwrite = False):
-
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-
-        root = "member_data"
-        filename = f"{self.mem_name}.pickle"
-
-        base = os.path.join(dir_path, root)
-        filepath = os.path.join(base, filename)
-
-        if(not overwrite):
-            # print(f"checking if file exitsts in {base}")
-            file_exists = self.check_if_file_exists(base, filename)
-            if(file_exists):
-                print(f"filename {self.mem_name} already exists please rename")
-                self.enter_member_name()
-                self.save_object()
-                return
-
-        try:
-
-            with open(filepath, "wb") as f:
-                pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
-        except Exception as ex:
-            print("Error during pickling object (Possibly unsupported):", ex)
 
 
 
@@ -118,7 +40,7 @@ class outing_planner():
                         return
                     
                     self.loaded_mem_obj.display_member()
-                    self.edit_member()
+                    self.edit_member_ask()
                     
 
 
@@ -132,17 +54,40 @@ class outing_planner():
         except ValueError:
             print("Please enter valid value")
 
-    def edit_member(self):
+    def edit_member_ask(self):
         ip = str(input(f"Would you like to edit member ({self.loaded_mem_obj.mem_name})? y/n: "))
-    
-        match ip.lower():
-            case "n":
-                return
-            case "y":
-                self.edit_member()
-            case _
+        try:
+            match ip.lower():
+                case "n":
+                    return
+                case "y":
+                    pass
+                case _:
+                    raise ValueError
+        except ValueError:
+            print("Please enter a valid valu")
+            self.edit_member_ask()
             
-        op = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n"))
+    def edit_member(self):
+        ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit"))
+
+        name_changed = False
+        try:
+            match ip:
+                case 0:
+                    self.loaded_mem_obj.enter_member_name()
+                    name_changed = True
+                case 1:
+                    self.loaded_mem_obj.enter_side()
+                case 9:
+                    self.loaded_mem_obj.save
+                case _:
+                    raise ValueError
+
+        except ValueError:
+            print("Please enter a valid value 0 or 1")   
+            self.edit_member()
+        
 
 
     def create_outing(self):
