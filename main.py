@@ -30,17 +30,20 @@ class outing_planner():
                     ...
 
                 case 1: # create_member + save
-                    obj = rowing_member()
+                    obj = rowing_member.rowing_member()
                     obj.save_object()
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view / make a change: ")
                     self.loaded_mem_obj, valid_mem = self.load_object(mem_name)
 
                     if not valid_mem:
-                        return
+                        print("Error in loading")
+                        return 
                     
                     self.loaded_mem_obj.display_member()
-                    self.edit_member_ask()
+                    edit_mem = self.edit_member_ask()
+                    if edit_mem:
+                        self.edit_member()
                     
 
 
@@ -59,9 +62,9 @@ class outing_planner():
         try:
             match ip.lower():
                 case "n":
-                    return
+                    return False
                 case "y":
-                    pass
+                    return True
                 case _:
                     raise ValueError
         except ValueError:
@@ -75,12 +78,14 @@ class outing_planner():
         try:
             match ip:
                 case 0:
+                    old_name = self.loaded_mem_obj.mem_name
                     self.loaded_mem_obj.enter_member_name()
                     name_changed = True
                 case 1:
                     self.loaded_mem_obj.enter_side()
                 case 9:
-                    self.loaded_mem_obj.save
+                    self.loaded_mem_obj.save_object(name_changed)
+
                 case _:
                     raise ValueError
 

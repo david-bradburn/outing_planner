@@ -13,14 +13,6 @@ class rowing_member():
         self.mem_name = str(input("Enter member name (i.e. first last): "))
 
 
-    # def enter_data(self, msg: str, options: list):
-
-    #     for i in options:
-    #         options_list
-
-    #     temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either, n/a)")
-
-
     def enter_side(self): # sweep only
         # self.mem_side 
         temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either or n/a): ")
@@ -46,8 +38,11 @@ class rowing_member():
 
     def display_member(self):
         """Just prints the rowing member attributes"""
-        print(f"Name       : {self.mem_name}")
-        print(f"Rowing side: {self.mem_side}")
+        print(f"Name        : {self.mem_name}")
+        print(f"Rowing side : {self.mem_side}")
+
+    def del_object(self, name):
+        ...
 
 
     def save_object(self, overwrite = False):
