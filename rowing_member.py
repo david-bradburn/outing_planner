@@ -41,8 +41,16 @@ class rowing_member():
         print(f"Name        : {self.mem_name}")
         print(f"Rowing side : {self.mem_side}")
 
-    def del_object(self, name):
-        ...
+
+    def del_object(self, old_name):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        root = "member_data"
+        filename = f"{old_name}.pickle"
+        base = os.path.join(dir_path, root)
+        filepath = os.path.join(base, filename)
+        print(filepath)
+        os.remove(filepath)
+        
 
 
     def save_object(self, overwrite = False):
@@ -65,7 +73,6 @@ class rowing_member():
                 return
 
         try:
-
             with open(filepath, "wb") as f:
                 pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as ex:

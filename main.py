@@ -68,23 +68,28 @@ class outing_planner():
                 case _:
                     raise ValueError
         except ValueError:
-            print("Please enter a valid valu")
-            self.edit_member_ask()
+            print("Please enter a valid value")
+            return self.edit_member_ask()
             
     def edit_member(self):
-        ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit"))
+        ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit\n"))
 
         name_changed = False
         try:
             match ip:
                 case 0:
-                    old_name = self.loaded_mem_obj.mem_name
+                    self.old_name = self.loaded_mem_obj.mem_name
                     self.loaded_mem_obj.enter_member_name()
                     name_changed = True
+
+                    self.edit_member()
                 case 1:
                     self.loaded_mem_obj.enter_side()
+                    self.edit_member()
                 case 9:
                     self.loaded_mem_obj.save_object(name_changed)
+                    if name_changed:
+                        self.loaded_mem_obj.del_object(self.old_name)
 
                 case _:
                     raise ValueError
