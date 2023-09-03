@@ -8,6 +8,7 @@ import rowing_member
 class outing_planner():
 
     def __init__(self):
+        # self.loaded_member
 
         self.main()
     
@@ -21,25 +22,19 @@ class outing_planner():
         print("------------------------------------------------------")
 
         try: 
-            op = int(input("Please enter operation: \n   0 : create and outing\n   1 : create member\n   2 : display/edit member \n   9 : quit program\n"))
+            op = int(input("Please enter operation: \n   0 : create and outing\n   2 : display member \n   9 : quit program\n"))
 
 
             match op:
-
-                case 0: # Create outing
-                    ...
-
-                case 1: # create_member + save
-                    obj = rowing_member.rowing_member()
-                    obj.save_object()
+                # case 1: # create_member + save
+                #     obj = rowing_member.rowing_member()
+                #     obj.save_object()
                 case 2: # view /edit member // load and edit
-                    mem_name = input("Please enter the member you wish to view / make a change: ")
-                    self.loaded_mem_obj, valid_mem = self.load_object(mem_name)
-
-                    if not valid_mem:
-                        print("Error in loading")
-                        return 
+                    mem_name = input("Please enter the member you wish to view : ")
+                    self.loaded_member = self.load_member(mem_name)
                     
+
+              
                     self.loaded_mem_obj.display_member()
                     edit_mem = self.edit_member_ask()
                     if edit_mem:
@@ -54,71 +49,72 @@ class outing_planner():
                 case _:
                     raise ValueError
 
-        except ValueError:
-            print("Please enter valid value")
+        except ValueError as ex:
+            print("Please enter valid value", ex)
 
-    def edit_member_ask(self):
-        ip = str(input(f"Would you like to edit member ({self.loaded_mem_obj.mem_name})? y/n: "))
-        try:
-            match ip.lower():
-                case "n":
-                    return False
-                case "y":
-                    return True
-                case _:
-                    raise ValueError
-        except ValueError:
-            print("Please enter a valid value")
-            return self.edit_member_ask()
+    # def edit_member_ask(self):
+    #     ip = str(input(f"Would you like to edit member ({self.loaded_mem_obj.mem_name})? y/n: "))
+    #     try:
+    #         match ip.lower():
+    #             case "n":
+    #                 return False
+    #             case "y":
+    #                 return True
+    #             case _:
+    #                 raise ValueError
+    #     except ValueError:
+    #         print("Please enter a valid value")
+    #         return self.edit_member_ask()
             
-    def edit_member(self):
-        ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit\n"))
+    # def edit_member(self):
+    #     ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit\n"))
 
-        name_changed = False
-        try:
-            match ip:
-                case 0:
-                    self.old_name = self.loaded_mem_obj.mem_name
-                    self.loaded_mem_obj.enter_member_name()
-                    name_changed = True
+    #     name_changed = False
+    #     try:
+    #         match ip:
+    #             case 0:
+    #                 self.old_name = self.loaded_mem_obj.mem_name
+    #                 self.loaded_mem_obj.enter_member_name()
+    #                 name_changed = True
 
-                    self.edit_member()
-                case 1:
-                    self.loaded_mem_obj.enter_side()
-                    self.edit_member()
-                case 9:
-                    self.loaded_mem_obj.save_object(name_changed)
-                    if name_changed:
-                        self.loaded_mem_obj.del_object(self.old_name)
+    #                 self.edit_member()
+    #             case 1:
+    #                 self.loaded_mem_obj.enter_side()
+    #                 self.edit_member()
+    #             case 9:
+    #                 self.loaded_mem_obj.save_object(name_changed)
+    #                 if name_changed:
+    #                     self.loaded_mem_obj.del_object(self.old_name)
 
-                case _:
-                    raise ValueError
+    #             case _:
+    #                 raise ValueError
 
-        except ValueError:
-            print("Please enter a valid value 0 or 1")   
-            self.edit_member()
+    #     except ValueError:
+    #         print("Please enter a valid value 0 or 1")   
+    #         self.edit_member()
         
 
 
     def create_outing(self):
         ...
 
-    def load_object(self, filename):
+    def load_member(self, filename):
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         root = "member_data"
-        filename_ext = f"{filename}.pickle"
+        filename_ext = f"{filename}.csv"
 
         base = os.path.join(dir_path, root)
         filepath = os.path.join(base, filename_ext)
 
         print(filepath)
+
         try:
-            with open(filepath, "rb") as f:
-                return pickle.load(f), True
+            with open(filepath, "r") as f:
+                return f.readlines()
         except Exception as ex:
-            print("Error during unpickling object (Possibly unsupported):", ex)
+            print("Error during loading object (possiblt does not exist):", ex)
             return None, False
 
 
