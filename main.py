@@ -1,9 +1,7 @@
-# import pickle
 import os
 import rowing_member
-# import pandas as pd
 import json
-# from enum import Enum
+
 
 
 
@@ -31,7 +29,7 @@ class outing_planner():
                 case 0:
                     # Create outing
                     ...
-                    
+
 
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
