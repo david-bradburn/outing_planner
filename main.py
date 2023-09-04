@@ -1,6 +1,8 @@
-import pickle
+# import pickle
 import os
 import rowing_member
+# import pandas as pd
+import json
 # from enum import Enum
 
 
@@ -26,22 +28,17 @@ class outing_planner():
 
 
             match op:
-                # case 1: # create_member + save
-                #     obj = rowing_member.rowing_member()
-                #     obj.save_object()
+
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
-                    self.loaded_member = self.load_member(mem_name)
-                    
+                    self.loaded_member_raw = self.load_member(mem_name)
+                    print(self.loaded_member_raw)
+                    self.loaded_member = rowing_member.rowing_member(self.loaded_member_raw)
 
-              
-                    self.loaded_mem_obj.display_member()
-                    edit_mem = self.edit_member_ask()
-                    if edit_mem:
-                        self.edit_member()
-                    
-
-
+                    # rowing_mem = rowing_member.rowing_member(self.loaded_member_df["Name"][0], self.loaded_member_df["Side"][0])
+                case 3:
+                    temp = input("new member name")
+                    self.loaded_member.set_member_name("test1")
 
                 case 9:
                     quit()
@@ -52,48 +49,6 @@ class outing_planner():
         except ValueError as ex:
             print("Please enter valid value", ex)
 
-    # def edit_member_ask(self):
-    #     ip = str(input(f"Would you like to edit member ({self.loaded_mem_obj.mem_name})? y/n: "))
-    #     try:
-    #         match ip.lower():
-    #             case "n":
-    #                 return False
-    #             case "y":
-    #                 return True
-    #             case _:
-    #                 raise ValueError
-    #     except ValueError:
-    #         print("Please enter a valid value")
-    #         return self.edit_member_ask()
-            
-    # def edit_member(self):
-    #     ip = int(input("Please enter which element to edit: \n   0 : name\n   1 : side\n   9 : save & exit\n"))
-
-    #     name_changed = False
-    #     try:
-    #         match ip:
-    #             case 0:
-    #                 self.old_name = self.loaded_mem_obj.mem_name
-    #                 self.loaded_mem_obj.enter_member_name()
-    #                 name_changed = True
-
-    #                 self.edit_member()
-    #             case 1:
-    #                 self.loaded_mem_obj.enter_side()
-    #                 self.edit_member()
-    #             case 9:
-    #                 self.loaded_mem_obj.save_object(name_changed)
-    #                 if name_changed:
-    #                     self.loaded_mem_obj.del_object(self.old_name)
-
-    #             case _:
-    #                 raise ValueError
-
-    #     except ValueError:
-    #         print("Please enter a valid value 0 or 1")   
-    #         self.edit_member()
-        
-
 
     def create_outing(self):
         ...
@@ -103,7 +58,7 @@ class outing_planner():
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         root = "member_data"
-        filename_ext = f"{filename}.csv"
+        filename_ext = f"{filename}.json"
 
         base = os.path.join(dir_path, root)
         filepath = os.path.join(base, filename_ext)
@@ -111,11 +66,11 @@ class outing_planner():
         print(filepath)
 
         try:
-            with open(filepath, "r") as f:
-                return f.readlines()
+            with open(filepath, 'r') as f:
+                return json.load(f)
         except Exception as ex:
             print("Error during loading object (possiblt does not exist):", ex)
-            return None, False
+            return None
 
 
 outing_planner()

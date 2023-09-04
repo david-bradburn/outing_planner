@@ -3,41 +3,29 @@ import os
 
 class rowing_member():
     
-    def __init__(self):
-        self.enter_member_name()
-        self.enter_side()
+    def __init__(self, dict):
+        ## Need to write functions to always source from dict to avoid lots of conversions
+        self.rowing_member_data = dict
+        self.name_changed = False
         self.display_member()
 
-
-    # def enter_member_name(self):
-    #     self.mem_name = str(input("Enter member name (i.e. first last): "))
-
-
-    # def enter_side(self): # sweep only
-    #     # self.mem_side 
-    #     temp = input(f"Enter {self.mem_name}'s rowing side (stroke, bow, either or n/a): ")
-    #     match temp:
-
-    #         case "stroke" | "bow" | "either" | "n/a":
-    #             self.mem_side = temp
-    #         case _:
-    #             print("Please enter valid side (stroke, bow, either or n/a): ")
-    #             self.enter_side()
-
-
-    def check_if_file_exists(self, path, filename):
-        """Checks to see if a given file exits at a given location"""
-        for root, dir1, files in os.walk(path):
-            if filename in files:
-                print(filename)
-                return True
-
-        # print("file does not exist")
-        return False
-
+    def get_member_name(self):
+        return self.rowing_member_data["Name"]
+    
+    def get_member_side(self):
+        return self.rowing_member_data["Side"]
+    
+    def get_member_history(self):
+        return self.rowing_member_data["History"]
 
     def display_member(self):
         """Just prints the rowing member attributes"""
-        print(f"Name        : {self.mem_name}")
-        print(f"Rowing side : {self.mem_side}")
+        print(f"Name        : {self.get_member_name()}")
+        print(f"Rowing side : {self.get_member_side()}")
+        print(f"History     : {self.get_member_history()}")
+
+    def set_member_name(self, new_name):
+        self.old_member_name = self.rowing_member_data["Name"]
+        self.rowing_member_data["Name"] = new_name
+        print(f"old name {self.old_member_name} -> new name {new_name}")
 
