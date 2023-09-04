@@ -28,17 +28,16 @@ class outing_planner():
 
 
             match op:
+                case 0:
+                    # Create outing
+                    ...
+                    
 
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
                     self.loaded_member_raw = self.load_member(mem_name)
                     print(self.loaded_member_raw)
                     self.loaded_member = rowing_member.rowing_member(self.loaded_member_raw)
-
-                    # rowing_mem = rowing_member.rowing_member(self.loaded_member_df["Name"][0], self.loaded_member_df["Side"][0])
-                case 3:
-                    temp = input("new member name")
-                    self.loaded_member.set_member_name("test1")
 
                 case 9:
                     quit()
