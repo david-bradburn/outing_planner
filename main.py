@@ -1,6 +1,7 @@
 import os
 import rowing_member
 import json
+import time
 
 
 
@@ -29,7 +30,17 @@ class outing_planner():
                 case 0:
                     # Create outing
                     ...
+                
+                case 1: # Create a member
+                    member_name = str(input("Please enter member name"))
+                    member_side = str(input(f"Please enter {member_name}'s rowing side"))
+                    member_ID   = hash(time.time())
+                    print(member_ID)
+                    member_dict = {"Name":member_name,
+                                   "Side":member_side,
+                                   "ID"  :member_ID}
 
+                    print(member_dict)
 
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
