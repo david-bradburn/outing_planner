@@ -31,26 +31,18 @@ class outing_planner():
                     ...
                 
                 case 1: # Create a member
-                    member_name = str(input("Please enter member name"))
-                    member_side = str(input(f"Please enter {member_name}'s rowing side"))
-                    member_ID   = hash(time.time()) ## might want to think of a better userid method?
-                    print(member_ID)
+                    member_name = str(input("Please enter member name : "))
+                    member_side = str(input(f"Please enter {member_name}'s rowing side: "))
+                    member_ID   = int(time.time()) ## might want to think of a better userid method? nah this is fine
+                    # print(member_ID)
                     member_dict = {"Name":member_name,
                                    "Side":member_side,
-                                   "ID"  :member_ID}
+                                   "ID"  :member_ID,
+                                   "History" : []}
 
-                    print(member_dict)
+                    # print(member_dict)
                     self.save_member(member_dict)
 
-                case 1: ## create member from template??
-                    template = {"Name": " ",
-                                "Side": " ",
-                                "ID"  : int(time.time()),
-                                "History" : " "}
-                    self.save_member(template)
-                    print("In the member data folder please go edit the new member and add data")
-
-                    
 
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
@@ -74,7 +66,7 @@ class outing_planner():
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         root = "member_data"
-        filename_ext = "NEW_MEMBER.json"
+        filename_ext = f"{member_data['Name']}.json"
 
         base = os.path.join(dir_path, root)
         filepath = os.path.join(base, filename_ext)
@@ -86,7 +78,6 @@ class outing_planner():
 
 
     def load_member(self, filename):
-
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         root = "member_data"
@@ -104,24 +95,6 @@ class outing_planner():
             print("Error during loading object (possiblt does not exist):", ex)
             return None
     
-    def save_member(self, file: dict):
-
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-
-        root = "member_data"
-        filename = file["Name"]
-        filename_ext = f"{filename}.json"
-
-        base = os.path.join(dir_path, root)
-        filepath = os.path.join(base, filename_ext)
-
-        print(filepath)
-
-        try:
-            with open(filepath, "w") as outfile:
-                json.dump(file, outfile)
-        except Exception as ex:
-            print("Error during saving object (possiblt does not exist):", ex)
 
 
 outing_planner()
