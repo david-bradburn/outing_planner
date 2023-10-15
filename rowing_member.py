@@ -1,5 +1,6 @@
 import pickle
 import os
+import utils
 
 class rowing_member():
     
@@ -9,21 +10,37 @@ class rowing_member():
         self.name_changed = False
         self.display_member()
 
-    def get_member_name(self):
-        return self.rowing_member_data["Name"]
+    def get_member_name(self, exception:Exception = KeyError):
+        try:
+            return self.rowing_member_data["Name"]
+        except exception:
+            return exception
     
-    def get_member_side(self):
-        return self.rowing_member_data["Side"]
+    def get_member_side(self, exception:Exception = KeyError):
+        try:
+            return self.rowing_member_data["Side"]
+        except exception:
+            return exception
     
-    def get_member_history(self):
+    def get_member_id(self, exception:Exception = KeyError):
+        try:
+            return self.rowing_member_data["ID"]
+        except exception:
+            return exception
+    
+    def get_member_history(self, exception:Exception = KeyError):
         """Unused for now"""
-        return self.rowing_member_data["History"]
+        try:
+            return self.rowing_member_data["History"]
+        except exception:
+            return exception
 
     def display_member(self):
         """Just prints the rowing member attributes"""
         print(f"Name        : {self.get_member_name()}")
         print(f"Rowing side : {self.get_member_side()}")
-        # print(f"History     : {self.get_member_history()}")
+        print(f"ID          : {self.get_member_id()}")
+        print(f"History     : {self.get_member_history()}")
 
     def set_member_name(self, new_name):
         """Unused for now"""

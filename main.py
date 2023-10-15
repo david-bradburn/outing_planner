@@ -10,11 +10,10 @@ class outing_planner():
 
     def __init__(self):
         # self.loaded_member
-
+        
         self.main()
     
     def main(self):
-
         while True:
             self.main_menu()
 
@@ -43,11 +42,19 @@ class outing_planner():
                     print(member_dict)
                     self.save_member(member_dict)
 
+                case 1: ## create member from template??
+                    template = {"Name": " ",
+                                "Side": " ",
+                                "ID"  : int(time.time()),
+                                "History" : " "}
+                    self.save_member(template)
+                    print("In the member data folder please go edit the new member and add data")
+
+                    
 
                 case 2: # view /edit member // load and edit
                     mem_name = input("Please enter the member you wish to view : ")
                     self.loaded_member_raw = self.load_member(mem_name)
-                    print(self.loaded_member_raw)
                     self.loaded_member = rowing_member.rowing_member(self.loaded_member_raw)
 
                 case 9:
@@ -62,6 +69,21 @@ class outing_planner():
 
     def create_outing(self):
         ...
+
+    def save_member(self, member_data: dict):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        root = "member_data"
+        filename_ext = "NEW_MEMBER.json"
+
+        base = os.path.join(dir_path, root)
+        filepath = os.path.join(base, filename_ext)
+        json_object = json.dumps(member_data, indent=4)
+
+        print(filepath)
+        with open(filepath, "w") as outfile:
+            outfile.write(json_object)
+
 
     def load_member(self, filename):
 
