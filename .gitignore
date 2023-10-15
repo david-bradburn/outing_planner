@@ -3,3 +3,5 @@
 *.pickle
 .venv
 *.pyc
+*.csv
+*.json
