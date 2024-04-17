@@ -1,5 +1,5 @@
 import os
-import rowing_member
+# import rowing_member
 import json
 import time
 
@@ -10,7 +10,7 @@ class outing_planner():
 
     def __init__(self):
         # self.loaded_member
-        
+        self.memdata = self.load_member_data()
         self.main()
     
     def main(self):
@@ -31,23 +31,15 @@ class outing_planner():
                     ...
                 
                 case 1: # Create a member
-                    member_name = str(input("Please enter member name : "))
-                    member_side = str(input(f"Please enter {member_name}'s rowing side: "))
-                    member_ID   = int(time.time()) ## might want to think of a better userid method? nah this is fine
-                    # print(member_ID)
-                    member_dict = {"Name":member_name,
-                                   "Side":member_side,
-                                   "ID"  :member_ID,
-                                   "History" : []}
-
-                    # print(member_dict)
-                    self.save_member(member_dict)
-
-
+                    self.create_member()
+                
                 case 2: # view /edit member // load and edit
-                    mem_name = input("Please enter the member you wish to view : ")
-                    self.loaded_member_raw = self.load_member(mem_name)
-                    self.loaded_member = rowing_member.rowing_member(self.loaded_member_raw)
+                    self.raw_print()
+                    self.display_members_raw()
+                    self.display_members_formatted()
+
+                case 3:
+                    self.save_members()
 
                 case 9:
                     quit()
@@ -60,33 +52,39 @@ class outing_planner():
 
 
     def create_outing(self):
+        # Eventually I want to get the csv from google sheets
+
         ...
 
-    def save_member(self, member_data: dict):
+    def create_member(self):
+        name = input("Please input name: ")
+        side = input("Please input side: ")
+        id = int(time.time())
+        # print(id, int(id))
+        mem = {"Name": name, "Side": side, "ID": id, "History": []}
+        self.memdata["member_data"].append(mem)
+
+    def save_members(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         root = "member_data"
-        filename_ext = f"{member_data['Name']}.json"
+        filename_ext = "member_data.json"
 
         base = os.path.join(dir_path, root)
         filepath = os.path.join(base, filename_ext)
-        json_object = json.dumps(member_data, indent=4)
+        # json_object = json.dumps(self.memdata, indent=4)
 
         print(filepath)
-        with open(filepath, "w") as outfile:
-            outfile.write(json_object)
+        with open(filepath, "w", encoding='utf-8') as outfile:
+            json.dump(self.memdata, outfile, ensure_ascii=False, indent=2)
 
 
-    def load_member(self, filename):
+    def load_member_data(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
-
         root = "member_data"
-        filename_ext = f"{filename}.json"
-
+        fn = "member_data.json"
         base = os.path.join(dir_path, root)
-        filepath = os.path.join(base, filename_ext)
-
-        print(filepath)
+        filepath = os.path.join(base, fn)
 
         try:
             with open(filepath, 'r') as f:
@@ -94,7 +92,19 @@ class outing_planner():
         except Exception as ex:
             print("Error during loading object (possiblt does not exist):", ex)
             return None
-    
 
+    def raw_print(self):
+        print(self.memdata)
 
-outing_planner()
+    def display_members_raw(self):
+        for mem in self.memdata['member_data']:
+            print(mem)
+
+    def display_members_formatted(self):
+        for mem in self.memdata['member_data']:
+            trmp_str = f"Name: {mem['Name']}\nSide: {mem['Side']}\nID: {mem['ID']}"
+            print(trmp_str)
+
+        
+if __name__ == "__main__":
+    outing_planner()
