@@ -2,6 +2,7 @@ import os
 # import rowing_member
 import json
 import time
+from sheets import sheets
 
 
 
@@ -24,7 +25,6 @@ class outing_planner():
         try: 
             op = int(input("Please enter operation: \n   0 : create and outing\n   2 : display member \n   9 : quit program\n"))
 
-
             match op:
                 case 0:
                     # Create outing
@@ -40,7 +40,18 @@ class outing_planner():
 
                 case 3:
                     self.save_members()
-
+                
+                case 4: # grab data from sheets
+                    data = sheets.getSheets()
+                    with open("dump.txt", "w") as fd:
+                        for row in data:
+                            rowstr = ""
+                            for item in row:
+                                rowstr += f"{item}, "
+                            rowstr += "\n"
+                            
+                            fd.write(rowstr)
+                    
                 case 9:
                     quit()
 
