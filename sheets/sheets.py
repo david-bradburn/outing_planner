@@ -54,8 +54,8 @@ def getSheets(squadsheet= "FP"):
       print("No data found.")
       return
 
-    print("Name, Major:")
-    print(values)
+    # print("Name, Major:")
+    # print(values)
     # for row in values:
     #   # Print columns A and E, which correspond to indices 0 and 4.
     #   print(f"{row}")

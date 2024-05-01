@@ -5,11 +5,12 @@ import time
 from sheets import sheets
 # import csv
 import utils
+import numpy as np
 
 
 ##############################################################
 ##
-## Outing planner Class
+## Outing Planner Class
 ##
 ##############################################################
 
@@ -18,7 +19,7 @@ class outing_planner():
 
   def __init__(self):
    # self.loaded_member
-   self.memdata = self.load_member_data()
+  #  self.memdata = self.load_member_data()
    self.main()
 
   def main(self):
@@ -50,7 +51,8 @@ class outing_planner():
 
         case 4: # grab data from sheets
           data = sheets.getSheets()
-          utils.write_to_csv("dump", data)
+          print(utils.get_data_size(data))
+          # utils.write_to_csv("dump", data)
 
         case 9:
           quit()
@@ -104,12 +106,21 @@ class outing_planner():
       print("Error during loading object (possiblt does not exist):", ex)
       return None
 
-  def raw_print(self):
+
+  def raw_print(self) -> None:
+    """
+      Prints raw member data
+    """
     print(self.memdata)
 
+
   def display_members_raw(self):
+    """
+      Prints member data
+    """
     for mem in self.memdata['member_data']:
       print(mem)
+
 
   def display_members_formatted(self):
     for mem in self.memdata['member_data']:
