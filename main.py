@@ -1,4 +1,9 @@
-import os
+UTILS = False
+OS = False
+
+
+import imports
+# import os
 # import rowing_member
 import json
 import time
@@ -50,10 +55,14 @@ class outing_planner():
           self.save_members()
 
         case 4: # grab data from sheets
-          data = sheets.getSheets()
-          print(utils.get_data_size(data))
-          # utils.write_to_csv("dump", data)
+          self.rawdata = sheets.getSheets()
+          # print(utils.get_data_size(data))
+          self.width, self.height = imports.utils.get_data_size(self.rawdata)
 
+          # utils.write_to_csv("dump", self.rawdata)
+
+        case 5:
+          self.data_arr
         case 9:
           quit()
 

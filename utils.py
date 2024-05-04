@@ -21,6 +21,10 @@ def get_data_size(data_arr) -> tuple:
   return max_width, height
 
 
+def read_from_csv(filename):
+  with open(f"{filename}.csv", "r"):
+     ...
+
 
 # def format_data_array(data_arr):
 #   """
@@ -41,7 +45,6 @@ def get_data_size(data_arr) -> tuple:
 #       case _:
 #         pass
 
-
 #   return arr
 
 def write_to_csv(filename: str, data: list):
@@ -50,6 +53,5 @@ def write_to_csv(filename: str, data: list):
   """
   with open(f"{filename}.csv", "w") as fd:
     wr = csv.writer(fd, quoting=csv.QUOTE_ALL)
-    for row in data:
-      wr.writerow(row)
+    wr.writerows(data)
 

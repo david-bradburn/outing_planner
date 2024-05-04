@@ -14,11 +14,12 @@ SAMPLE_SPREADSHEET_ID = "1SiW7hfhlq217k2meMEhTXPO9OywP7EQ5QXMpIFavaEM"
 
 
 def getSheets(squadsheet= "FP"):
-  SAMPLE_RANGE_NAME = f"{squadsheet}!B1:Q"
-
-  """Shows basic usage of the Sheets API.
+  """
+  Shows basic usage of the Sheets API.
   Prints values from a sample spreadsheet.
   """
+
+  SAMPLE_RANGE_NAME = f"{squadsheet}!B1:Q"
   creds = None
   # The file token.json stores the user's access and refresh tokens, and is
   # created automatically when the authorization flow completes for the first
