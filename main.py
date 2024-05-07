@@ -1,14 +1,9 @@
-UTILS = False
-OS = False
 
-
-import imports
-# import os
-# import rowing_member
+import os
 import json
 import time
 from sheets import sheets
-# import csv
+import csv
 import utils
 import numpy as np
 
@@ -57,12 +52,14 @@ class outing_planner():
         case 4: # grab data from sheets
           self.rawdata = sheets.getSheets()
           # print(utils.get_data_size(data))
-          self.width, self.height = imports.utils.get_data_size(self.rawdata)
+          utils.write_to_csv("dump", self.rawdata)
+          # self.width, self.height = utils.get_data_size(self.rawdata)
 
           # utils.write_to_csv("dump", self.rawdata)
 
         case 5:
-          self.data_arr
+          utils.csv_to_df("dump")
+
         case 9:
           quit()
 
