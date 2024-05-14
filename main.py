@@ -52,12 +52,21 @@ class outing_planner():
         case 4: # grab data from sheets
           self.rawdata = sheets.getSheets()
           # print(utils.get_data_size(data))
-          utils.write_to_csv("dump", self.rawdata)
-          # self.width, self.height = utils.get_data_size(self.rawdata)
-
-          # utils.write_to_csv("dump", self.rawdata)
 
         case 5:
+
+          try: # catch if we haven't ran 4
+            rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
+          except NameError:
+            print("Grabbing data")
+            self.rawdata = sheets.getSheets()
+            rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
+
+          self.filenames = ["rowers", "coxes", "coaches", "subs"]
+          for index, item in enumerate(rowersCollectionArr):
+            utils.writeString2csv(f"{self.filenames[index]}", item)
+
+        case 6:
           utils.csv_to_df("dump")
 
         case 9:

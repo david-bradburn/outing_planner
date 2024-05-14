@@ -1,16 +1,17 @@
 import csv
 import pandas as pd
+import copy
 
 def print_ex_catch(msg: str, error_type: Exception):
-    "Doesn't work if the error occurs in the message string :("
-    try:
-        print(msg)
-    except:
-        pass
+  "Doesn't work if the error occurs in the message string :("
+  try:
+      print(msg)
+  except:
+      pass
 
 
 
-def get_data_size(data_arr) -> tuple:
+def get_data_size(data_arr: list) -> tuple:
   """
     Gets the size of the availability data
   """
@@ -30,45 +31,72 @@ def csv_to_df(filename: str):
   df = pd.read_csv(f"{filename}.csv")
   print(df)
 
-# def format_data_array(data_arr):
-#   """
-#     Format data array
-#   """
-#   aval_dict = {}
-#   outingDates = []
-#   outingTimes = []
-#   for row_index, row in enumerate(data_arr):
-#     match row_index:
-#       case 0:
-#         crew_name = row[0]
 
-#       case 2:
-#         for date in row:
-#           outingDates.append(date)
+def cleanANDSplitRawDataForCSV(data: list) -> list:
+  """
+    This cleans and splits the data
+  """
+  loc = 0
+  # arrayOfstringsRowing = []
+  header = []
+  Rowers = []
+  Coxes = []
+  Coaches = []
+  Subs = []
+  for row_index, row in enumerate(data):
+    if row_index in [1, 4, 5, 6, 7 , 9]:
+      continue
+    tempstr = ""
+    print(f"{row_index}, {loc}, {row}")
+    for item in row:
 
-#       case _:
-#         pass
+      match item:
+        case "Rowers" | "Coxes" | "Subs" | "Coaches":
+          if loc == 0:
+            print(header)
+            Rowers = copy.deepcopy(header)
+            Coxes = copy.deepcopy(header)
+            Coaches = copy.deepcopy(header)
+            Subs = copy.deepcopy(header)
+          loc += 1
 
-#   return arr
+        case _:
+          pass
 
-def write_to_csv(filename: str, data: list):
+      tempstr += f"{item}, "
+
+    tempstr = tempstr[:-2] + "\n" # get rid of lat comma and space
+
+    match loc:
+      case 0: #This is for the header
+        header.append(tempstr)
+
+      case 1: #Rowers
+        Rowers.append(tempstr)
+
+      case 2: # Coxes
+        Coxes.append(tempstr)
+
+      case 3: # Coaches
+        Coaches.append(tempstr)
+
+      case 4: #Subs
+        Subs.append(tempstr)
+
+      case _:
+        raise Exception("Should be impossible")
+
+  # print(header)
+  return [Rowers, Coxes, Coaches, Subs]
+
+
+def writeString2csv(filename: str, data: list) -> None:
   """
     Write data array to csv file
   """
-
-  strarr = []
-  for row_index, row in enumerate(data):
-    if row_index in [1, 4, 5, 6, 7 , 9]:
-       continue
-    tempstr = ""
-    for item in row:
-      tempstr += f"{item}, "
-    # print(tempstr)
-    tempstr = tempstr[:-2] + "\n"
-    strarr.append(tempstr)
-
+  # I want to split the df into 4 main sections, core rowers, coxes, coaches and subs
 
   with open(f"{filename}.csv", "w") as fd:
-    for rowstr in strarr:
+    for rowstr in data:
       fd.write(rowstr)
 
