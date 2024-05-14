@@ -47,25 +47,26 @@ def cleanANDSplitRawDataForCSV(data: list) -> list:
     if row_index in [1, 4, 5, 6, 7 , 9]:
       continue
     tempstr = ""
-    print(f"{row_index}, {loc}, {row}")
+    # print(f"{row_index}, {loc}, {row}")
     for item in row:
-
+      if item == "END": #cba stripping out the END
+        continue
       match item:
         case "Rowers" | "Coxes" | "Subs" | "Coaches":
           if loc == 0:
-            print(header)
+            # print(header)
             Rowers = copy.deepcopy(header)
             Coxes = copy.deepcopy(header)
             Coaches = copy.deepcopy(header)
             Subs = copy.deepcopy(header)
           loc += 1
-
+          continue # cheeky/hacky way to remove the "Rowers" | "Coxes" | "Subs" | "Coaches" bit
         case _:
           pass
 
       tempstr += f"{item}, "
 
-    tempstr = tempstr[:-2] + "\n" # get rid of lat comma and space
+    tempstr = tempstr[:-2] + "\n" # get rid of last comma and space
 
     match loc:
       case 0: #This is for the header

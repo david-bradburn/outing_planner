@@ -3,9 +3,9 @@ import os
 import json
 import time
 from sheets import sheets
-import csv
+# import csv
 import utils
-import numpy as np
+# import numpy as np
 
 
 ##############################################################
@@ -57,17 +57,21 @@ class outing_planner():
 
           try: # catch if we haven't ran 4
             rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
-          except NameError:
+          except AttributeError:
             print("Grabbing data")
             self.rawdata = sheets.getSheets()
             rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
 
           self.filenames = ["rowers", "coxes", "coaches", "subs"]
           for index, item in enumerate(rowersCollectionArr):
-            utils.writeString2csv(f"{self.filenames[index]}", item)
+            utils.writeString2csv(f"./availability/{self.filenames[index]}", item)
 
         case 6:
-          utils.csv_to_df("dump")
+
+          utils.csv_to_df("rowers")
+          utils.csv_to_df("coxes")
+          utils.csv_to_df("coaches")
+          utils.csv_to_df("subs")
 
         case 9:
           quit()
