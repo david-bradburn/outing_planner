@@ -45,9 +45,9 @@ input : """
     print("------------------------------------------------------")
 
     try:
-      op = utils.askForInput(self.msg)
+      ip = utils.askForInput(self.msg)
 
-      match op:
+      match ip:
         case 0:
           # Create outing
           ...
@@ -89,6 +89,10 @@ input : """
 
         case "q":
           quit()
+
+
+        case "t":
+          utils.dateFormating("7 May", "16:00pm")
 
         case _:
           raise ValueError

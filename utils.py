@@ -1,6 +1,7 @@
 import csv
 import pandas as pd
 import copy
+import datetime as dt
 
 def print_ex_catch(msg: str, error_type: Exception):
   "Doesn't work if the error occurs in the message string :("
@@ -30,6 +31,33 @@ def read_from_csv(filename):
 def csv_to_df(filename: str):
   df = pd.read_csv(f"{filename}.csv")
   print(df)
+
+
+def dateFormating(avalDate: str, time: str):
+  """
+    To convert the string to datetime format
+    https://favtutor.com/blogs/get-current-year-python
+    https://www.digitalocean.com/community/tutorials/python-string-to-datetime-strptime
+  """
+  todaydate = dt.date.today()
+
+  thisYear = todaydate.year
+  thisYearString = str(thisYear)
+  # print(thisYearString) # Need to be able to handle the year switch over
+
+  datetimestring = f"{avalDate} {thisYearString} {time}"
+  dtformat = "%d %b %Y %H:%M%p"
+
+  op = dt.datetime.strptime(datetimestring, dtformat)
+  if op.date() < todaydate:
+    thisYearString = str(thisYear + 1)
+    datetimestring = f"{avalDate} {thisYearString} {time}"
+    dtformat = "%d %b %Y %H:%M%p"
+
+    op = dt.datetime.strptime(datetimestring, dtformat)
+
+  print(op)
+
 
 def askForInput(msg: str) -> str:
   ip = input(msg)
