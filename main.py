@@ -20,6 +20,20 @@ class outing_planner():
   def __init__(self):
    # self.loaded_member
   #  self.memdata = self.load_member_data()
+   self.msg = """
+    Please enter operation:
+      0 : create and outing
+          Does nothing
+      1 : Create a member
+      2 : display member
+      3 : Save created members to file
+      4 : grab availability data from sheets
+      5 : Processes data from sheets and saves to csv
+      6 : converts csv to df
+      q : quit program
+
+input : """
+
    self.main()
 
   def main(self):
@@ -31,7 +45,7 @@ class outing_planner():
     print("------------------------------------------------------")
 
     try:
-      op = int(input("Please enter operation: \n  0 : create and outing\n  2 : display member \n  9 : quit program\n"))
+      op = utils.askForInput(self.msg)
 
       match op:
         case 0:
@@ -73,7 +87,7 @@ class outing_planner():
           utils.csv_to_df("coaches")
           utils.csv_to_df("subs")
 
-        case 9:
+        case "q":
           quit()
 
         case _:

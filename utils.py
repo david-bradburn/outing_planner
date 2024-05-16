@@ -31,6 +31,19 @@ def csv_to_df(filename: str):
   df = pd.read_csv(f"{filename}.csv")
   print(df)
 
+def askForInput(msg: str) -> str:
+  ip = input(msg)
+
+  return inputCleaning(ip)
+
+def inputCleaning(ip: str) -> str | int:
+  try:
+    temp = int(ip)
+  except:
+    temp = ip
+
+  return temp
+
 
 def cleanANDSplitRawDataForCSV(data: list) -> list:
   """
