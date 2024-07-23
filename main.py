@@ -70,17 +70,23 @@ input : """
         case 5:
 
           try: # catch if we haven't ran 4
-            rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
+            rowersCollectionArr = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
           except AttributeError:
             print("Grabbing data")
             self.rawdata = sheets.getSheets()
-            rowersCollectionArr = utils.cleanANDSplitRawDataForCSV(self.rawdata)
+            rowersCollectionArr = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
 
-          self.filenames = ["rowers", "coxes", "coaches", "subs"]
-          for index, item in enumerate(rowersCollectionArr):
-            utils.writeString2csv(f"./availability/{self.filenames[index]}", item)
+          self.alldata =  rowersCollectionArr
+          # self.filenames = ["rowers", "coxes", "coaches", "subs"]
+          # print(rowersCollectionArr[0])
+          self.proccessWhoIsAvail(self.alldata[0])
+          # for index, item in enumerate(rowersCollectionArr):
+          #   utils.writeString2csv(f"./availability/{self.filenames[index]}", item)
 
         case 6:
+          # TO DO - Once the data has been cleaned from gsheets 
+          # I think I want it to be in a 2d array so I can jsut iterate over the rows
+          # for each coloumn and directly calculate who is available for each of the 
 
           utils.csv_to_df("rowers")
           utils.csv_to_df("coxes")
@@ -99,6 +105,18 @@ input : """
 
     except ValueError as ex:
       print("Please enter valid value", ex)
+
+  def proccessWhoIsAvail(self, data: list):
+    self.availdata = {}
+    timearr = []
+    for i in range(2,len(data[1])):
+      timearr.append(f"{data[1][i]} {data[2][i]}")
+    print(timearr)
+    self.availpeople = {}
+    for i in range(2, len(data[1])):
+      for j in range(2, len(data)-1):
+        ...
+    self.availpeople[timearr[i-2]] = 
 
 
   def create_outing(self):

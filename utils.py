@@ -28,8 +28,8 @@ def read_from_csv(filename):
   with open(f"{filename}.csv", "r"):
     ...
 
-def csv_to_df(filename: str):
-  df = pd.read_csv(f"{filename}.csv")
+def csv_to_df(filename: str, pathtodir = "availability"):
+  df = pd.read_csv(f"{pathtodir}/{filename}.csv")
   print(df)
 
 
@@ -72,6 +72,64 @@ def inputCleaning(ip: str) -> str | int:
 
   return temp
 
+def cleanANDSplitRawDataInTo2DArr(data: list) -> list:
+  """
+    New function to return a 2d array and save that instead
+  """
+  loc = 0
+  # arrayOfstringsRowing = []
+  header = []
+  Rowers = []
+  Coxes = []
+  Coaches = []
+  Subs = []
+  for row_index, row in enumerate(data):
+    if row_index in [1, 4, 5, 6, 7 , 9]:
+      continue
+    temparr = []
+    # print(f"{row_index}, {loc}, {row}")
+    for item in row:
+      if item == "END": #cba stripping out the END
+        continue
+      match item:
+        case "Rowers" | "Coxes" | "Subs" | "Coaches":
+          if loc == 0:
+            Rowers = copy.deepcopy(header)
+            Coxes = copy.deepcopy(header)
+            Coaches = copy.deepcopy(header)
+            Subs = copy.deepcopy(header)
+          loc += 1
+          continue # cheeky/hacky way to remove the "Rowers" | "Coxes" | "Subs" | "Coaches" bit
+        case _:
+          pass
+
+      temparr.append(item)
+
+    # tempstr = tempstr[:-2] + "\n" # get rid of last comma and space
+
+    match loc:
+      case 0: #This is for the header
+        header.append(temparr)
+
+      case 1: #Rowers
+        Rowers.append(temparr)
+
+      case 2: # Coxes
+        Coxes.append(temparr)
+
+      case 3: # Coaches
+        Coaches.append(temparr)
+
+      case 4: #Subs
+        Subs.append(temparr)
+
+      case _:
+        raise Exception("Should be impossible")
+
+  # print(header)
+  return [Rowers, Coxes, Coaches, Subs]
+
+
 
 def cleanANDSplitRawDataForCSV(data: list) -> list:
   """
@@ -95,7 +153,6 @@ def cleanANDSplitRawDataForCSV(data: list) -> list:
       match item:
         case "Rowers" | "Coxes" | "Subs" | "Coaches":
           if loc == 0:
-            # print(header)
             Rowers = copy.deepcopy(header)
             Coxes = copy.deepcopy(header)
             Coaches = copy.deepcopy(header)
@@ -141,4 +198,7 @@ def writeString2csv(filename: str, data: list) -> None:
   with open(f"{filename}.csv", "w") as fd:
     for rowstr in data:
       fd.write(rowstr)
+
+# def readcsv22Darr(filename: str, pathtodir = "availability"):
+#   with open(f"{pathtodir}/{filename}.csv", "r") as fd:
 
