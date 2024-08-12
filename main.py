@@ -77,21 +77,9 @@ input : """
             rowersCollectionArr = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
 
           self.alldata =  rowersCollectionArr
-          # self.filenames = ["rowers", "coxes", "coaches", "subs"]
-          # print(rowersCollectionArr[0])
+
           self.proccessWhoIsAvail(self.alldata[0])
-          # for index, item in enumerate(rowersCollectionArr):
-          #   utils.writeString2csv(f"./availability/{self.filenames[index]}", item)
 
-        case 6:
-          # TO DO - Once the data has been cleaned from gsheets 
-          # I think I want it to be in a 2d array so I can jsut iterate over the rows
-          # for each coloumn and directly calculate who is available for each of the 
-
-          utils.csv_to_df("rowers")
-          utils.csv_to_df("coxes")
-          utils.csv_to_df("coaches")
-          utils.csv_to_df("subs")
 
         case "q":
           quit()
@@ -109,14 +97,27 @@ input : """
   def proccessWhoIsAvail(self, data: list):
     self.availdata = {}
     timearr = []
-    for i in range(2,len(data[1])):
-      timearr.append(f"{data[1][i]} {data[2][i]}")
+    listOfOutingTimes = data[1][2:]
+    # print(listOfOutingTimes)
+    numberOfOutings = len(listOfOutingTimes) -2
+    for i in range(numberOfOutings):
+      timearr.append(f"{data[1][2+i]} {data[2][2+i]}")
     print(timearr)
     self.availpeople = {}
-    for i in range(2, len(data[1])):
-      for j in range(2, len(data)-1):
-        ...
-    self.availpeople[timearr[i-2]] = 
+
+    for date_index in range(numberOfOutings):
+      temp = []
+      for rower_index in range(len(data)-5):
+        # print(data[5+rower_index][2+date_index])
+        try:
+          if data[5+rower_index][2+date_index].lower() == "y":
+            temp.append(data[5+rower_index][0])
+        except:
+          pass
+      self.availpeople[timearr[date_index]] = temp
+
+    for key in self.availpeople:
+      print(f"date: {key} -> rowers: {self.availpeople[key]}")
 
 
   def create_outing(self):
