@@ -1,11 +1,9 @@
 
 import os
-import json
-import time
 from sheets import sheets
-# import csv
+import member_utils
 import utils
-# import numpy as np
+
 
 
 ##############################################################
@@ -70,17 +68,33 @@ input : """
         case 5:
 
           try: # catch if we haven't ran 4
-            rowersCollectionArr = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
+            ListofListofMembers = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
           except AttributeError:
             print("Grabbing data")
             self.rawdata = sheets.getSheets()
-            rowersCollectionArr = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
+            ListofListofMembers = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
 
-          self.alldata =  rowersCollectionArr
-
+          self.alldata =  ListofListofMembers
+          print(self.alldata[0])
           self.proccessWhoIsAvail(self.alldata[0])
 
+        case 6:
+          # This creates local copies of all the members it finds in the spreadsheet
+          try:
+            a = self.alldata
+            typearr= ["rower", "cox", "coach", "sub"]
+            #cheap test to catch if we have't processes the data will rewrite maybe
+            for member_index in range(5, len(self.alldata[0])-1):
+              print(member_utils.check_if_member_exists(self.alldata[0][member_index][0]))
 
+
+
+          except AttributeError:
+            print("Please fetch data with 5")
+            
+
+
+          ...
         case "q":
           quit()
 
@@ -119,69 +133,12 @@ input : """
     for key in self.availpeople:
       print(f"date: {key} -> rowers: {self.availpeople[key]}")
 
-
   def create_outing(self):
     # Eventually I want to get the csv from google sheets
 
     ...
 
-  def create_member(self):
-    name = input("Please input name: ")
-    side = input("Please input side: ")
-    id = int(time.time())
-    # print(id, int(id))
-    mem = {"Name": name, "Side": side, "ID": id, "History": []}
-    self.memdata["member_data"].append(mem)
 
-  def save_members(self):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-
-    root = "member_data"
-    filename_ext = "member_data.json"
-
-    base = os.path.join(dir_path, root)
-    filepath = os.path.join(base, filename_ext)
-    # json_object = json.dumps(self.memdata, indent=4)
-
-    print(filepath)
-    with open(filepath, "w", encoding='utf-8') as outfile:
-      json.dump(self.memdata, outfile, ensure_ascii=False, indent=2)
-
-
-  def load_member_data(self):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    root = "member_data"
-    fn = "member_data.json"
-    base = os.path.join(dir_path, root)
-    filepath = os.path.join(base, fn)
-
-    try:
-      with open(filepath, 'r') as f:
-        return json.load(f)
-    except Exception as ex:
-      print("Error during loading object (possiblt does not exist):", ex)
-      return None
-
-
-  def raw_print(self) -> None:
-    """
-      Prints raw member data
-    """
-    print(self.memdata)
-
-
-  def display_members_raw(self):
-    """
-      Prints member data
-    """
-    for mem in self.memdata['member_data']:
-      print(mem)
-
-
-  def display_members_formatted(self):
-    for mem in self.memdata['member_data']:
-      trmp_str = f"Name: {mem['Name']}\nSide: {mem['Side']}\nID: {mem['ID']}"
-      print(trmp_str)
 
 
 if __name__ == "__main__":

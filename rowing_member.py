@@ -1,6 +1,3 @@
-import pickle
-import os
-import utils
 
 class rowing_member():
     
