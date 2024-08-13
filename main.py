@@ -80,18 +80,18 @@ input : """
 
         case 6:
           # This creates local copies of all the members it finds in the spreadsheet
-          try:
-            a = self.alldata
-            typearr= ["rower", "cox", "coach", "sub"]
-            #cheap test to catch if we have't processes the data will rewrite maybe
-            for member_index in range(5, len(self.alldata[0])-1):
-              print(member_utils.check_if_member_exists(self.alldata[0][member_index][0]))
+   
 
-
-
-          except AttributeError:
-            print("Please fetch data with 5")
-            
+          typearr= ["rower", "cox", "coach", "sub"]
+          for member_index in range(5, len(self.alldata[0])-1):
+            name = self.alldata[0][member_index][0]
+            side = self.alldata[0][member_index][1]
+            print(name,side)
+            if member_utils.check_if_member_exists(name):
+              ...
+            else:
+              member_utils.create_member_from_file(name, side)
+        
 
 
           ...
