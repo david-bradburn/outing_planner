@@ -22,12 +22,9 @@ class outing_planner():
     Please enter operation:
       0 : create and outing
           Does nothing
-      1 : Create a member
-      2 : display member
-      3 : Save created members to file
-      4 : grab availability data from sheets
-      5 : Processes data from sheets and saves to csv
-      6 : converts csv to df
+      1 : Processes data from sheets and calulates who is available
+          Then does nothing
+      2 : Creates or updates memeb files on system
       q : quit program
 
 input : """
@@ -50,22 +47,7 @@ input : """
           # Create outing
           ...
 
-        case 1: # Create a member
-          self.create_member()
-
-        case 2: # view /edit member // load and edit
-          self.raw_print()
-          self.display_members_raw()
-          self.display_members_formatted()
-
-        case 3:
-          self.save_members()
-
-        case 4: # grab data from sheets
-          self.rawdata = sheets.getSheets()
-          # print(utils.get_data_size(data))
-
-        case 5:
+        case 1:
 
           try: # catch if we haven't ran 4
             ListofListofMembers = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
@@ -75,25 +57,34 @@ input : """
             ListofListofMembers = utils.cleanANDSplitRawDataInTo2DArr(self.rawdata)
 
           self.alldata =  ListofListofMembers
-          print(self.alldata[0])
-          self.proccessWhoIsAvail(self.alldata[0])
+          # print(self.alldata[0])
+          # print(self.alldata[1])
+          # print(self.alldata[2])
+          # print(self.alldata[3])
+          typearr = ["rower", "cox", "coach", "sub"]
+          for index, memtype in enumerate(typearr):
+            self.proccessWhoIsAvail(self.alldata[index], memtype)
 
-        case 6:
+        case 2:
           # This creates local copies of all the members it finds in the spreadsheet
-   
 
           typearr= ["rower", "cox", "coach", "sub"]
-          for member_index in range(5, len(self.alldata[0])-1):
-            name = self.alldata[0][member_index][0]
-            side = self.alldata[0][member_index][1]
-            print(name,side)
-            if member_utils.check_if_member_exists(name):
-              ...
-            else:
-              member_utils.create_member_from_file(name, side)
+          for member_type in range(4):
+            for member_index in range(5, len(self.alldata[member_type])): ## this just skips the header
+              name = self.alldata[member_type][member_index][0]
+              try:
+                side = self.alldata[member_type][member_index][1]
+              except:
+                side = "N/A"
+              member = member_utils.member(name, side, typearr[member_type])
+              
+              if member._member_exists:
+                # print("member exits")
+                member.load_member_update_and_save()
+              else:
+                print("member does not exist, creating file")
+                member.create_member_and_save()
         
-
-
           ...
         case "q":
           quit()
@@ -108,7 +99,7 @@ input : """
     except ValueError as ex:
       print("Please enter valid value", ex)
 
-  def proccessWhoIsAvail(self, data: list):
+  def proccessWhoIsAvail(self, data: list, member_type: str):
     self.availdata = {}
     timearr = []
     listOfOutingTimes = data[1][2:]
@@ -131,14 +122,12 @@ input : """
       self.availpeople[timearr[date_index]] = temp
 
     for key in self.availpeople:
-      print(f"date: {key} -> rowers: {self.availpeople[key]}")
+      print(f"date: {key} -> {member_type}: {self.availpeople[key]}")
 
   def create_outing(self):
     # Eventually I want to get the csv from google sheets
 
     ...
-
-
 
 
 if __name__ == "__main__":

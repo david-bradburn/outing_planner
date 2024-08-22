@@ -1,4 +1,4 @@
-import csv
+# import csv
 import pandas as pd
 import copy
 import datetime as dt
@@ -112,16 +112,29 @@ def cleanANDSplitRawDataInTo2DArr(data: list) -> list:
         header.append(temparr)
 
       case 1: #Rowers
-        Rowers.append(temparr)
+        if len(temparr) == 0:
+          pass
+        else:
+          Rowers.append(temparr)
+      
 
       case 2: # Coxes
-        Coxes.append(temparr)
+        if len(temparr) == 0:
+          pass
+        else:
+          Coxes.append(temparr)
 
       case 3: # Coaches
-        Coaches.append(temparr)
+        if len(temparr) == 0:
+          pass
+        else:
+          Coaches.append(temparr)
 
       case 4: #Subs
-        Subs.append(temparr)
+        if len(temparr) == 0:
+          pass
+        else:
+          Subs.append(temparr)
 
       case _:
         raise Exception("Should be impossible")
